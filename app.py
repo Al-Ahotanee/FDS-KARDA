@@ -302,16 +302,41 @@ def log_audit(actor_id, actor_type, action, details=''):
 
 # ============= STATIC PAGE ROUTES =============
 
+def resolve_file(filename):
+    """
+    Find an HTML file reliably across local and Render environments.
+    Checks: directory of app.py → current working directory → /opt/render/project/src
+    """
+    candidates = [
+        os.path.join(BASE_DIR, filename),
+        os.path.join(os.getcwd(), filename),
+        os.path.join('/opt/render/project/src', filename),
+    ]
+    for path in candidates:
+        if os.path.isfile(path):
+            return path
+    return None
+
+
 @app.route('/')
 def landing():
     """Serve the landing page"""
-    return send_from_directory(BASE_DIR, 'main.html')
+    path = resolve_file('main.html')
+    if path:
+        return send_file(path)
+    # Diagnostic: list files so we can see what Render has
+    files = os.listdir(BASE_DIR)
+    return jsonify({'error': 'main.html not found', 'BASE_DIR': BASE_DIR, 'files': files}), 404
 
 
 @app.route('/app')
 def app_main():
     """Serve the main application"""
-    return send_from_directory(BASE_DIR, 'index.html')
+    path = resolve_file('index.html')
+    if path:
+        return send_file(path)
+    files = os.listdir(BASE_DIR)
+    return jsonify({'error': 'index.html not found', 'BASE_DIR': BASE_DIR, 'files': files}), 404
 
 
 @app.route('/favicon.ico')
