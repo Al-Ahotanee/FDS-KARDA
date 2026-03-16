@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JARDA FDS: Blockchain-powered fertilizer distribution system for transparent, efficient, and fair agricultural solutions in Jigawa State.">
+    <meta name="keywords" content="agritech, blockchain, fertilizer distribution, QR code, sustainable farming, Jigawa agriculture">
+    <meta name="author" content="JARDA">
+    <title>JARDA FDS - Blockchain Powered Fertilizer Distribution System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://taat-africa.org/wp-content/uploads/2023/04/DJI_0702.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+        .fade-in-up-delay-1 { animation-delay: 0.3s; }
+        .fade-in-up-delay-2 { animation-delay: 0.6s; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .navbar {
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            border-radius: 1.5rem;
+        }
+        .feature-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 30px rgba(34, 197, 94, 0.15);
+        }
+        .stats-card {
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: translateY(-8px);
+        }
+        /* Carousel Styles */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-item {
+            flex: 0 0 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        @media (min-width: 768px) {
+            .carousel-item {
+                flex: 0 0 25%;
+            }
+        }
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.3);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .carousel-control:hover {
+            background: rgba(255,255,255,0.5);
+        }
+        .carousel-control-prev {
+            left: 0;
+        }
+        .carousel-control-next {
+            right: 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full bg-white bg-opacity-95 backdrop-blur-lg shadow-lg z-50 navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-3xl font-bold text-green-600"><i class="fas fa-seedling mr-2"></i>JARDA FDS</a>
+            <div class="space-x-6 flex items-center">
+                <a href="#home" class="text-gray-700 hover:text-green-600 font-medium transition-colors">Home</a>
+                <a href="#features" class="text-gray-700 hover:text-green-600 font-medium transition-colors">Features</a>
+                <a href="#about" class="text-gray-700 hover:text-green-600 font-medium transition-colors">About</a>
+                <a href="/app" class="text-gray-700 hover:text-green-600 font-medium transition-colors">Dashboard</a>
+                <a href="/app" class="bg-gradient-to-r from-green-800 to-green-700 text-white px-6 py-2 rounded-full hover:from-green-900 hover:to-green-800 transition-all transform hover:-translate-y-1 shadow-md hover:shadow-lg">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg h-screen flex items-center justify-center text-center text-white">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 fade-in-up leading-tight">Revolutionizing Fertilizer Distribution in Jigawa</h1>
+            <p class="text-xl md:text-3xl mb-10 fade-in-up fade-in-up-delay-1 max-w-3xl mx-auto">Empowering Jigawa farmers with blockchain-powered transparency, efficiency, and equity in fertilizer allocation</p>
+            <a href="/app" class="bg-gradient-to-r from-green-800 to-green-700 text-white px-10 py-4 rounded-full text-lg font-semibold hover:from-green-900 hover:to-green-800 transition-all transform hover:-translate-y-1 fade-in-up fade-in-up-delay-2 shadow-lg hover:shadow-xl"><i class="fas fa-rocket mr-2"></i>Launch App</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">Why JARDA FDS?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-shield-alt text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">Blockchain Security</h4>
+                    <p class="text-gray-600">Immutable records ensure transparent distribution and prevent fraud in Jigawa's agricultural sector.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-mobile-alt text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">QR Code Verification</h4>
+                    <p class="text-gray-600">Seamless mobile scanning for instant, secure fertilizer claims and distribution.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-chart-line text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">Equity-Based Allocation</h4>
+                    <p class="text-gray-600">AI optimizes fair distribution based on farm needs, location, and Jigawa's agricultural priorities.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-users text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">Farmer-Centric Design</h4>
+                    <p class="text-gray-600">Role-based dashboards tailored for Jigawa farmers, admins, and officers.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-leaf text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">Sustainable Impact</h4>
+                    <p class="text-gray-600">Reduce waste, boost yields, and promote eco-friendly farming in Jigawa State.</p>
+                </div>
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-md border border-green-100">
+                    <i class="fas fa-database text-5xl text-green-500 mb-4"></i>
+                    <h4 class="text-xl font-semibold mb-2 text-gray-800">Real-Time Analytics</h4>
+                    <p class="text-gray-600">Insights on sessions, inventory, and blockchain audit logs for informed decision-making.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section Carousel -->
+    <section class="py-16 bg-gradient-to-r from-green-800 to-green-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="carousel">
+                <div class="carousel-inner" id="statsCarousel">
+                    <div class="carousel-item">
+                        <div class="stats-card text-center">
+                            <h3 class="text-5xl font-bold mb-2">1,000+</h3>
+                            <p class="text-lg">Farmers Empowered</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="stats-card text-center">
+                            <h3 class="text-5xl font-bold mb-2">50,000+</h3>
+                            <p class="text-lg">Bags Distributed</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="stats-card text-center">
+                            <h3 class="text-5xl font-bold mb-2">30%</h3>
+                            <p class="text-lg">Yield Increase</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="stats-card text-center">
+                            <h3 class="text-5xl font-bold mb-2">100%</h3>
+                            <p class="text-lg">Transparent Transactions</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control carousel-control-prev" onclick="moveCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-control carousel-control-next" onclick="moveCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">About JARDA FDS</h2>
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <img src="https://lagosagric.com/wp-content/uploads/2024/08/WhatsApp-Image-2024-07-30-at-00.03.53-1-1.jpeg" alt="Jigawa Farmers" class="rounded-3xl shadow-2xl w-full transform hover:scale-105 transition-transform duration-500">
+                </div>
+                <div class="md:w-1/2">
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">JARDA FDS, powered by cutting-edge blockchain technology, is revolutionizing fertilizer distribution in Jigawa State. As part of the Jigawa Agricultural and Rural Development Authority, we ensure transparency, fairness, and efficiency for local farmers.</p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">Our platform integrates AI-driven allocation, QR code verification, and real-time analytics to empower Jigawa farmers, reduce waste, and boost agricultural productivity across the state.</p>
+                    <a href="/app" class="bg-gradient-to-r from-green-800 to-green-700 text-white px-8 py-3 rounded-full hover:from-green-900 hover:to-green-800 transition-all transform hover:-translate-y-1 shadow-md hover:shadow-lg">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h5 class="text-xl font-bold mb-4"><i class="fas fa-seedling mr-2"></i>JARDA FDS</h5>
+                    <p class="text-gray-200">Empowering Jigawa agriculture through blockchain innovation.</p>
+                </div>
+                <div>
+                    <h6 class="text-lg font-semibold mb-4">Quick Links</h6>
+                    <ul class="space-y-2">
+                        <li><a href="/app" class="hover:text-green-400 transition-colors">Dashboard</a></li>
+                        <li><a href="#features" class="hover:text-green-400 transition-colors">Features</a></li>
+                        <li><a href="#about" class="hover:text-green-400 transition-colors">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="text-lg font-semibold mb-4">Resources</h6>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-green-400 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-green-400 transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-green-400 transition-colors">Documentation</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="text-lg font-semibold mb-4">Contact</h6>
+                    <p class="text-gray-200">Email: info@jarda.jg.gov.ng<br>Phone: +234 (0) 803 123 4567<br>Address: Dutse, Jigawa State, Nigeria</p>
+                </div>
+            </div>
+            <hr class="my-8 border-green-600">
+            <p class="text-center text-gray-200">&copy; 2025 JARDA. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(anchor.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Trigger fade-in animations on load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                el.style.opacity = 0;
+            });
+        });
+
+        // Carousel functionality
+        let currentIndex = 0;
+        const carouselInner = document.getElementById('statsCarousel');
+        const items = carouselInner.children;
+        const itemCount = items.length;
+        const isMobile = window.innerWidth < 768;
+
+        function moveCarousel(direction) {
+            currentIndex = (currentIndex + direction + itemCount) % itemCount;
+            const translateValue = isMobile ? -currentIndex * 100 : -currentIndex * 25;
+            carouselInner.style.transform = `translateX(${translateValue}%)`;
+        }
+
+        // Auto-slide every 3 seconds
+        setInterval(() => moveCarousel(1), 3000);
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            isMobile = window.innerWidth < 768;
+            moveCarousel(0); // Reset position
+        });
+    </script>
+</body>
+</html>
