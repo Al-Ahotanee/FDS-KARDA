@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ARDA — Katsina State Fertilizer Distribution System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root {
+  --forest:  #0B2415;
+  --forest2: #163825;
+  --forest3: #1E5235;
+  --leaf:    #22A84A;
+  --leaf2:   #2ECC5C;
+  --leafbg:  rgba(34,168,74,0.1);
+  --leafglow:rgba(34,168,74,0.25);
+  --soil:    #8B6840;
+  --soillt:  #C49A58;
+  --white:   #FFFFFF;
+  --off:     #F7FAF8;
+  --ink2:    #4A7860;
+  --muted:   #7A9E8A;
+  --rule:    rgba(11,36,21,0.1);
+  --sh:      0 4px 24px rgba(11,36,21,0.1);
+  --shd:     0 16px 56px rgba(11,36,21,0.16);
+  --fd: 'Syne', sans-serif;
+  --fb: 'Outfit', sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+  --ez: cubic-bezier(0.22,1,0.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--white);color:var(--forest);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  height:62px;
+  background:rgba(255,255,255,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--rule);
+  transition:box-shadow .3s;
+}
+#nav.scrolled{box-shadow:var(--sh);}
+.ni{
+  max-width:1280px;margin:0 auto;padding:0 2rem;
+  height:62px;display:flex;align-items:center;justify-content:space-between;
+}
+.nb{display:flex;align-items:center;gap:.8rem;}
+.nlogo{
+  width:38px;height:38px;background:var(--forest);
+  border-radius:9px;display:grid;place-items:center;
+}
+.nb-text strong{
+  display:block;font-family:var(--fd);
+  font-size:.95rem;font-weight:700;color:var(--forest);
+}
+.nb-text small{
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.07em;text-transform:uppercase;
+}
+.nlinks{display:flex;list-style:none;gap:.1rem;}
+.nlinks a{
+  padding:.4rem .85rem;font-size:.78rem;
+  font-weight:500;color:var(--ink2);border-radius:6px;transition:all .18s;
+}
+.nlinks a:hover{background:var(--leafbg);color:var(--forest);}
+.nact{display:flex;gap:.6rem;}
+.btn{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.5rem 1.1rem;font-family:var(--fb);font-size:.78rem;
+  font-weight:600;border-radius:7px;cursor:pointer;border:none;
+  transition:all .2s var(--ez);
+}
+.bg{background:transparent;color:var(--ink2);border:1.5px solid var(--rule);}
+.bg:hover{border-color:var(--leaf);color:var(--forest);background:var(--leafbg);}
+.bp{background:var(--forest);color:#fff;box-shadow:0 2px 10px rgba(11,36,21,.22);}
+.bp:hover{background:var(--forest3);transform:translateY(-1px);box-shadow:var(--shd);}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;padding-top:62px;
+  background:var(--forest);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+/* animated dot grid */
+.hdots{
+  position:absolute;inset:0;z-index:0;
+  background-image:radial-gradient(circle,rgba(34,168,74,.28) 1px,transparent 1px);
+  background-size:30px 30px;
+  animation:drift 20s linear infinite;
+}
+@keyframes drift{from{background-position:0 0}to{background-position:30px 30px}}
+/* topo lines */
+.htopo{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.18;}
+/* glow orbs */
+.orb{
+  position:absolute;border-radius:50%;filter:blur(72px);
+  pointer-events:none;z-index:0;
+}
+.orb1{
+  width:520px;height:520px;top:-80px;right:-80px;
+  background:radial-gradient(circle,rgba(34,168,74,.18),transparent 70%);
+  animation:of 9s ease-in-out infinite;
+}
+.orb2{
+  width:360px;height:360px;bottom:60px;left:-60px;
+  background:radial-gradient(circle,rgba(30,82,53,.26),transparent 70%);
+  animation:of 11s ease-in-out infinite reverse;
+}
+@keyframes of{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+
+.hbody{
+  position:relative;z-index:1;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  max-width:1280px;margin:0 auto;width:100%;
+  padding:3rem 2rem 2rem;
+}
+/* live badge */
+.hlive{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.28rem .8rem;margin-bottom:1.8rem;
+  background:rgba(34,168,74,.13);border:1px solid rgba(34,168,74,.28);
+  border-radius:100px;width:fit-content;
+  animation:ru .8s var(--ez) both;
+}
+.hlivd{width:5px;height:5px;background:var(--leaf2);border-radius:50%;animation:pg 2s ease-in-out infinite;}
+@keyframes pg{0%,100%{opacity:1}50%{opacity:.35}}
+.hlive span{font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--leaf2);}
+
+h1{
+  font-family:var(--fd);
+  font-size:clamp(2.8rem,5.8vw,5.4rem);
+  font-weight:800;line-height:1.0;letter-spacing:-.04em;
+  color:#fff;max-width:800px;
+  animation:ru .85s .08s var(--ez) both;
+}
+h1 .hl{color:var(--leaf2);}
+h1 .dim{font-weight:300;color:rgba(255,255,255,.58);}
+.hsub{
+  max-width:500px;margin-top:1.4rem;
+  font-size:.92rem;line-height:1.78;font-weight:300;
+  color:rgba(255,255,255,.54);
+  animation:ru .85s .16s var(--ez) both;
+}
+.hcta{
+  display:flex;align-items:center;gap:.9rem;margin-top:2.2rem;
+  animation:ru .85s .24s var(--ez) both;
+}
+.hbp{
+  height:50px;padding:0 1.8rem;font-family:var(--fb);
+  font-size:.84rem;font-weight:600;border-radius:9px;
+  background:var(--leaf);color:#fff;border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .22s var(--ez);
+  box-shadow:0 4px 20px var(--leafglow);
+}
+.hbp:hover{background:var(--leaf2);transform:translateY(-2px);box-shadow:0 10px 36px rgba(34,168,74,.4);}
+.hbg{
+  height:50px;padding:0 1.6rem;font-family:var(--fb);
+  font-size:.84rem;font-weight:500;border-radius:9px;
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.78);
+  border:1.5px solid rgba(255,255,255,.14);cursor:pointer;
+  display:inline-flex;align-items:center;gap:.45rem;
+  transition:all .2s;
+}
+.hbg:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);}
+
+/* hero stat bar */
+.hstats{
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.08);
+  position:relative;z-index:1;
+  animation:ru .85s .32s var(--ez) both;
+}
+.hs{
+  flex:1;padding:1.4rem 1.8rem;
+  border-right:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:.9rem;
+}
+.hs:last-child{border-right:none;}
+.hsi{
+  width:38px;height:38px;border-radius:9px;flex-shrink:0;
+  background:rgba(34,168,74,.12);border:1px solid rgba(34,168,74,.22);
+  display:grid;place-items:center;color:var(--leaf2);
+}
+.hsn{font-family:var(--fd);font-size:1.7rem;font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1;}
+.hsn em{color:var(--leaf2);font-style:normal;}
+.hsl{font-size:.68rem;font-weight:300;color:rgba(255,255,255,.42);margin-top:.12rem;}
+
+@keyframes ru{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PORTALS ── */
+#portals{padding:5rem 0;background:var(--white);border-bottom:1px solid var(--rule);}
+.si{max-width:1280px;margin:0 auto;padding:0 2rem;}
+.sec-top{text-align:center;margin-bottom:2.5rem;}
+.stag{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.25rem .7rem;background:var(--leafbg);border-radius:100px;
+  font-family:var(--fm);font-size:.58rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--leaf);margin-bottom:.9rem;
+}
+.sh{
+  font-family:var(--fd);font-size:clamp(1.7rem,3vw,2.4rem);
+  font-weight:800;line-height:1.08;letter-spacing:-.03em;color:var(--forest);
+}
+.sh em{color:var(--leaf);font-style:normal;}
+.sp{font-size:.88rem;line-height:1.75;font-weight:300;color:var(--ink2);margin-top:.6rem;}
+
+.pog{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.por{
+  border-radius:16px;overflow:hidden;
+  border:1.5px solid var(--rule);
+  display:flex;flex-direction:column;
+  transition:all .25s var(--ez);
+  box-shadow:0 2px 12px rgba(11,36,21,.06);
+}
+.por:hover{transform:translateY(-4px);box-shadow:var(--shd);border-color:transparent;}
+.porh{padding:1.8rem 1.8rem 1.4rem;display:flex;align-items:flex-start;gap:1rem;}
+.pori{
+  width:48px;height:48px;border-radius:12px;
+  display:grid;place-items:center;flex-shrink:0;
+}
+.pia{background:linear-gradient(135deg,var(--forest),var(--forest3));color:var(--leaf2);}
+.pif{background:linear-gradient(135deg,#1A4D2E,#227840);color:#72E89A;}
+.pio{background:linear-gradient(135deg,var(--soil),var(--soillt));color:#FFD9A0;}
+.porbd{font-family:var(--fm);font-size:.56rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem;}
+.port{font-family:var(--fd);font-size:1.15rem;font-weight:800;color:var(--forest);letter-spacing:-.02em;line-height:1.1;}
+.porb{padding:0 1.8rem 1.4rem;flex:1;}
+.porb p{font-size:.8rem;line-height:1.72;color:var(--ink2);font-weight:300;}
+.porf{
+  padding:1rem 1.8rem;background:var(--off);
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--rule);
+}
+.porl{
+  font-size:.76rem;font-weight:600;
+  display:flex;align-items:center;gap:.35rem;transition:gap .2s;
+}
+.por:hover .porl{gap:.6rem;}
+.pa .porl{color:var(--forest);}
+.pf .porl{color:#1A6B38;}
+.po .porl{color:var(--soil);}
+
+/* ── FEATURES STRIP ── */
+#features{padding:4.5rem 0;background:var(--off);border-bottom:1px solid var(--rule);}
+.fg{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;margin-top:2.5rem;
+}
+.fc{
+  padding:1.6rem;background:var(--white);
+  border-radius:12px;border:1.5px solid var(--rule);
+  transition:all .22s var(--ez);
+}
+.fc:hover{border-color:var(--leaf);box-shadow:var(--sh);transform:translateY(-2px);}
+.fci{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--forest),var(--forest3));
+  display:grid;place-items:center;color:var(--leaf2);margin-bottom:1rem;
+}
+.fc h4{font-family:var(--fd);font-size:.88rem;font-weight:700;color:var(--forest);margin-bottom:.35rem;}
+.fc p{font-size:.76rem;line-height:1.65;color:var(--ink2);font-weight:300;}
+
+/* ── FOOTER ── */
+footer{background:var(--forest2);border-top:1px solid rgba(255,255,255,.06);}
+.fb{
+  max-width:1280px;margin:0 auto;padding:2.5rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+  flex-wrap:wrap;
+}
+.fbrand{display:flex;align-items:center;gap:.8rem;}
+.flogo{
+  width:34px;height:34px;
+  background:rgba(34,168,74,.13);
+  border:1px solid rgba(34,168,74,.22);
+  border-radius:8px;display:grid;place-items:center;color:var(--leaf2);
+}
+.fbrand strong{font-family:var(--fd);font-size:.9rem;font-weight:700;color:rgba(255,255,255,.88);}
+.fbrand span{display:block;font-size:.62rem;color:rgba(255,255,255,.38);font-weight:300;letter-spacing:.04em;}
+.flinks{display:flex;gap:1.8rem;flex-wrap:wrap;}
+.flinks a{font-size:.76rem;color:rgba(255,255,255,.4);font-weight:300;transition:color .18s;}
+.flinks a:hover{color:rgba(255,255,255,.82);}
+.fleg{font-size:.66rem;color:rgba(255,255,255,.25);font-weight:300;}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .55s var(--ez),transform .55s var(--ez);}
+.rv.in{opacity:1;transform:none;}
+
+/* responsive */
+@media(max-width:900px){
+  .nlinks{display:none;}
+  .pog{grid-template-columns:1fr;}
+  .fg{grid-template-columns:1fr 1fr;}
+  .hstats{flex-direction:column;}
+  .hs{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);}
+  .hs:last-child{border-bottom:none;}
+}
+@media(max-width:560px){
+  h1{font-size:2.4rem;}
+  .fg{grid-template-columns:1fr;}
+  .fb{flex-direction:column;align-items:flex-start;gap:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="ni">
+    <a href="/" class="nb">
+      <div class="nlogo"><i data-lucide="leaf" style="width:18px;height:18px;color:#22A84A;"></i></div>
+      <div class="nb-text">
+        <strong>ARDA Katsina</strong>
+        <small>Fertilizer Distribution System</small>
+      </div>
+    </a>
+    <ul class="nlinks">
+      <li><a href="#portals">Portals</a></li>
+      <li><a href="#features">Features</a></li>
+    </ul>
+    <div class="nact">
+      <a href="/app" class="btn bg"><i data-lucide="log-in" style="width:13px;height:13px;"></i>Sign In</a>
+      <a href="/app" class="btn bp">Access System <i data-lucide="arrow-up-right" style="width:13px;height:13px;"></i></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <!-- topo SVG -->
+  <svg class="htopo" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <path d="M-100,520 Q250,420 500,440 Q750,462 950,400 Q1150,338 1350,378 Q1450,400 1540,365" fill="none" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <path d="M-100,575 Q300,475 550,492 Q800,512 1000,450 Q1200,385 1380,428 Q1470,450 1540,415" fill="none" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <path d="M-100,466 Q200,366 450,382 Q700,400 900,340 Q1100,278 1300,320 Q1400,344 1540,308" fill="none" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="800" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <line x1="720" y1="0" x2="720" y2="800" stroke="rgba(34,168,74,0.8)" stroke-width="1"/>
+    <line x1="1080" y1="0" x2="1080" y2="800" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <!-- targeting crosshair -->
+    <circle cx="1060" cy="310" r="72" stroke="rgba(34,168,74,1)" stroke-width="1" fill="none"/>
+    <circle cx="1060" cy="310" r="42" stroke="rgba(34,168,74,0.85)" stroke-width="1" fill="none"/>
+    <circle cx="1060" cy="310" r="5" stroke="rgba(34,168,74,1)" stroke-width="1.5" fill="rgba(34,168,74,0.12)"/>
+    <line x1="1025" y1="310" x2="1095" y2="310" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+    <line x1="1060" y1="275" x2="1060" y2="345" stroke="rgba(34,168,74,1)" stroke-width="1"/>
+  </svg>
+  <div class="hdots" aria-hidden="true"></div>
+  <div class="orb orb1" aria-hidden="true"></div>
+  <div class="orb orb2" aria-hidden="true"></div>
+
+  <div class="hbody">
+    <div class="hlive">
+      <div class="hlivd"></div>
+      <span>System Operational &mdash; Katsina State, Nigeria</span>
+    </div>
+    <h1>
+      Precision Agriculture.<br/>
+      <span class="hl">Zero Leakage.</span><br/>
+      <span class="dim">Every Bag Tracked.</span>
+    </h1>
+    <p class="hsub">
+      ARDA's blockchain-powered fertilizer distribution system delivers verifiable,
+      equitable allocation to every registered farmer across Katsina State's 34 LGAs —
+      from allocation to acknowledgement, fully secured.
+    </p>
+    <div class="hcta">
+      <a href="/app" class="hbp">Access Platform <i data-lucide="arrow-right" style="width:15px;height:15px;"></i></a>
+      <a href="#portals" class="hbg">Select a Portal</a>
+    </div>
+  </div>
+
+  <div class="hstats">
+    <div class="hs">
+      <div class="hsi"><i data-lucide="map" style="width:17px;height:17px;"></i></div>
+      <div><div class="hsn">34<em>+</em></div><div class="hsl">LGAs Covered</div></div>
+    </div>
+    <div class="hs">
+      <div class="hsi"><i data-lucide="shield-check" style="width:17px;height:17px;"></i></div>
+      <div><div class="hsn">100<em>%</em></div><div class="hsl">Blockchain Verified</div></div>
+    </div>
+    <div class="hs">
+      <div class="hsi"><i data-lucide="qr-code" style="width:17px;height:17px;"></i></div>
+      <div><div class="hsn">QR</div><div class="hsl">Token Per Allocation</div></div>
+    </div>
+    <div class="hs">
+      <div class="hsi"><i data-lucide="ban" style="width:17px;height:17px;"></i></div>
+      <div><div class="hsn">0<em>%</em></div><div class="hsl">Diversion Tolerance</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTALS -->
+<section id="portals">
+  <div class="si">
+    <div class="sec-top rv">
+      <div class="stag"><i data-lucide="log-in" style="width:10px;height:10px;"></i>System Access</div>
+      <h2 class="sh">Select Your <em>Portal</em></h2>
+      <p class="sp">Three purpose-built portals — each scoped to exactly the workflows your role requires.</p>
+    </div>
+    <div class="pog rv">
+      <a href="/app" class="por pa">
+        <div class="porh">
+          <div class="pori pia"><i data-lucide="shield-half" style="width:22px;height:22px;"></i></div>
+          <div><div class="porbd">Administrator</div><div class="port">Admin Dashboard</div></div>
+        </div>
+        <div class="porb"><p>Manage distribution sessions, approve allocation requests, oversee fertilizer inventory, and verify blockchain integrity across the system.</p></div>
+        <div class="porf">
+          <div class="porl"><span>Enter Admin Portal</span><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i></div>
+          <i data-lucide="chevron-right" style="width:15px;height:15px;color:var(--muted);"></i>
+        </div>
+      </a>
+
+      <a href="/app" class="por pf">
+        <div class="porh">
+          <div class="pori pif"><i data-lucide="sprout" style="width:22px;height:22px;"></i></div>
+          <div><div class="porbd">Registered Farmer</div><div class="port">Farmer Portal</div></div>
+        </div>
+        <div class="porb"><p>Submit allocation requests, download your QR token on approval, track collection status, and confirm receipt of your fertilizer bags.</p></div>
+        <div class="porf">
+          <div class="porl"><span>Enter Farmer Portal</span><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i></div>
+          <i data-lucide="chevron-right" style="width:15px;height:15px;color:var(--muted);"></i>
+        </div>
+      </a>
+
+      <a href="/app" class="por po">
+        <div class="porh">
+          <div class="pori pio"><i data-lucide="store" style="width:22px;height:22px;"></i></div>
+          <div><div class="porbd">Store Officer</div><div class="port">Distribution Console</div></div>
+        </div>
+        <div class="porb"><p>Scan farmer QR codes to process releases, record distribution events to the blockchain, and manage store inventory levels.</p></div>
+        <div class="porf">
+          <div class="porl"><span>Enter Officer Console</span><i data-lucide="arrow-up-right" style="width:14px;height:14px;"></i></div>
+          <i data-lucide="chevron-right" style="width:15px;height:15px;color:var(--muted);"></i>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES STRIP -->
+<section id="features">
+  <div class="si">
+    <div class="sec-top rv" style="text-align:left;">
+      <div class="stag"><i data-lucide="cpu" style="width:10px;height:10px;"></i>Platform Capabilities</div>
+      <h2 class="sh">Everything You Need,<br/><em>Nothing You Don't</em></h2>
+    </div>
+    <div class="fg rv">
+      <div class="fc">
+        <div class="fci"><i data-lucide="database" style="width:20px;height:20px;"></i></div>
+        <h4>Blockchain Ledger</h4>
+        <p>SHA-256 chained blocks record every allocation and distribution. Immutable, verifiable, tamper-evident.</p>
+      </div>
+      <div class="fc">
+        <div class="fci"><i data-lucide="qr-code" style="width:20px;height:20px;"></i></div>
+        <h4>QR Allocation Tokens</h4>
+        <p>Each approved request generates a unique QR code. Officers scan to release the exact allocated quantity.</p>
+      </div>
+      <div class="fc">
+        <div class="fci"><i data-lucide="package" style="width:20px;height:20px;"></i></div>
+        <h4>Live Inventory Tracking</h4>
+        <p>Real-time stock levels for NPK, Urea, and all fertilizer types — across every ARDA store.</p>
+      </div>
+      <div class="fc">
+        <div class="fci"><i data-lucide="scroll-text" style="width:20px;height:20px;"></i></div>
+        <h4>Full Audit Logs</h4>
+        <p>Every action by every actor is time-stamped and persisted. Complete, unalterable system history.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fb">
+    <div class="fbrand">
+      <div class="flogo"><i data-lucide="leaf" style="width:16px;height:16px;"></i></div>
+      <div>
+        <strong>ARDA Katsina</strong>
+        <span>Agricultural &amp; Rural Development Authority &mdash; Katsina State, Nigeria</span>
+      </div>
+    </div>
+    <div class="flinks">
+      <a href="/app">Admin Portal</a>
+      <a href="/app">Farmer Login</a>
+      <a href="/app">Store Officer</a>
+      <a href="#features">Features</a>
+    </div>
+    <span class="fleg">&copy; 2025 ARDA. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// nav scroll shadow
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), {passive:true});
+
+// scroll reveal
+const ro = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 60);
+      ro.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.1, rootMargin: '0px 0px -30px 0px'});
+document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

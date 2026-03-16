@@ -1,0 +1,3086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertilizer Distribution System - Blockchain Enabled</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- AdminLTE CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #17a2b8;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 450px;
+            width: 100%;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #20c997 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .login-body {
+            padding: 40px 30px;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #20c997 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .dashboard-container {
+            display: none;
+        }
+        
+        .sidebar {
+            background: #343a40;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            background: #212529;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li a {
+            display: block;
+            padding: 15px 20px;
+            color: #c2c7d0;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            background: #495057;
+            color: white;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .top-navbar {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-card {
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            color: white;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card.green {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .stat-card.blue {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+        
+        .stat-card.orange {
+            background: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%);
+        }
+        
+        .stat-card.purple {
+            background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+        }
+        
+        .stat-card-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+            float: right;
+        }
+        
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .stat-card-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .content-card-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .content-card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-pending {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .badge-approved {
+            background: #28a745;
+            color: white;
+        }
+        
+        .badge-distributed {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .badge-completed {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .badge-rejected {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .qr-code-display {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .qr-code-display img {
+            max-width: 300px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .blockchain-block {
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        
+        .blockchain-block.genesis {
+            border-left-color: #6f42c1;
+        }
+        
+        .hash-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            background: #343a40;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            word-break: break-all;
+            margin: 5px 0;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-250px);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block !important;
+            }
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .d-grid {
+            display: grid;
+        }
+        
+        .gap-2 {
+            gap: 0.5rem;
+        }
+        
+        .justify-content-center {
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============= LOGIN PAGE ============= -->
+<div id="loginPage" class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="bi bi-clipboard-check"></i>
+            <h3 class="mb-0">Fertilizer Distribution</h3>
+            <small>Blockchain Enabled System</small>
+        </div>
+        <div class="login-body">
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="loginUserId" placeholder="F001, A001, or S001" pattern="[FAS]\d{3}" required>
+                    <small class="text-muted">Format: F### (Farmer), A### (Admin), S### (Officer)</small>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" minlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-success btn-login w-100">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </button>
+            </form>
+            
+            <div class="text-center mt-4">
+                <hr>
+                <p class="mb-2">Don't have an account?</p>
+                <button class="btn btn-outline-primary btn-sm me-2" onclick="showRegisterModal('farmer')">
+                    <i class="bi bi-person-plus"></i> Register as Farmer
+                </button>
+               <button class="btn btn-outline-secondary btn-sm" onclick="window.location.href=&#x27;/&#x27;">
+                    <i class="bi bi-arrow-left"></i> Back to Landing Page
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============= DASHBOARD (HIDDEN BY DEFAULT) ============= -->
+<div id="dashboardPage" class="dashboard-container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-clipboard-check"></i> FDS
+        </div>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <!-- Menu items will be dynamically loaded based on user role -->
+        </ul>
+        <div class="p-3 text-center">
+            <button class="btn btn-danger btn-sm w-100" onclick="logout()">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            <i class="bi bi-list"></i>
+        </button>
+        
+        <div class="top-navbar">
+            <div>
+                <h4 class="mb-0" id="pageTitle">Dashboard</h4>
+                <small class="text-muted" id="pageSubtitle">Welcome back!</small>
+            </div>
+            <div>
+                <span class="badge bg-success">
+                    <i class="bi bi-person-circle"></i>
+                    <span id="userNameDisplay"></span>
+                </span>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div id="contentArea">
+            <!-- Content will be dynamically loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- ============= MODALS ============= -->
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Register New User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <input type="hidden" id="registerType">
+                    <div class="mb-3">
+                        <label class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="registerUserId" required>
+                        <small class="text-muted" id="registerIdHint"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="registerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="registerPassword" minlength="6" required>
+                    </div>
+                    <div id="farmerFields" class="hidden">
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="registerPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">LGA</label>
+                            <select class="form-control" id="registerLga">
+                                <option value="">Select LGA</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ward</label>
+                            <select class="form-control" id="registerWard">
+                                <option value="">Select Ward</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Polling Unit</label>
+                            <select class="form-control" id="registerPollingUnit">
+                                <option value="">Select Polling Unit</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Farm Size (hectares)</label>
+                            <input type="number" class="form-control" id="registerFarmSize" step="0.01">
+                        </div>
+                    </div>
+                    <div id="officerFields" class="hidden">
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" id="registerLocation">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-check-circle"></i> Register
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Code Display Modal -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QR Code for Distribution</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="qrCodeContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- QR Scanner Modal -->
+<div class="modal fade" id="qrScannerModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Verify QR Code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manualTab">
+                            <i class="bi bi-keyboard"></i> Manual Entry
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#uploadTab">
+                            <i class="bi bi-image"></i> Upload Image
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="camera-tab" data-bs-toggle="tab" data-bs-target="#cameraTab">
+                            <i class="bi bi-camera"></i> Camera Scan
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content">
+                    <!-- Manual Entry Tab -->
+                    <div class="tab-pane fade show active" id="manualTab">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Instructions:</strong> Ask the farmer to click "Copy QR Data" and send you the data.
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Enter QR Code Data</label>
+                            <textarea class="form-control" id="qrManualInput" rows="6" placeholder='Paste the complete QR data here (should start with { and end with })'></textarea>
+                            <small class="text-muted">Example: {"request_id":1,"farmer_id":"F001","session_id":1,"allocated_bags":50,"blockchain_hash":"abc123..."}</small>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="verifyQRCode()">
+                            <i class="bi bi-check-circle"></i> Verify QR Code
+                        </button>
+                    </div>
+                    
+                    <!-- Upload Image Tab -->
+                    <div class="tab-pane fade" id="uploadTab">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Instructions:</strong> Upload the QR code image that the farmer downloaded.
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Upload QR Code Image</label>
+                            <input type="file" class="form-control" id="qrImageUpload" accept="image/*" onchange="handleQRImageUpload(event)">
+                        </div>
+                        <div id="uploadPreview" class="text-center mb-3" style="display: none;">
+                            <img id="uploadedImage" style="max-width: 300px; border: 2px solid #ddd; border-radius: 10px;">
+                            <div class="mt-2">
+                                <button class="btn btn-primary" onclick="processQRImage()">
+                                    <i class="bi bi-search"></i> Read QR Code
+                                </button>
+                            </div>
+                        </div>
+                        <canvas id="qrCanvas" style="display: none;"></canvas>
+                    </div>
+                    
+                    <!-- Camera Tab -->
+                    <div class="tab-pane fade" id="cameraTab">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> 
+                            <strong>Instructions:</strong> Click "Start Camera" and point at the farmer's QR code on their phone screen.
+                        </div>
+                        <div class="text-center">
+                            <video id="qrVideo" width="100%" style="max-width: 500px; border: 2px solid #ddd; border-radius: 10px; display: none;"></video>
+                            <canvas id="qrScanCanvas" style="display: none;"></canvas>
+                            <div id="cameraStatus" class="mt-3">
+                                <button class="btn btn-success" onclick="startCameraScanning()">
+                                    <i class="bi bi-camera-video"></i> Start Camera
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="qrVerificationResult"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Session Modal -->
+<div class="modal fade" id="createSessionModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Distribution Session</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createSessionForm">
+                    <div class="mb-3">
+                        <label class="form-label">Session Name</label>
+                        <input type="text" class="form-control" id="sessionName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fertilizer Type</label>
+                        <select class="form-control" id="sessionFertilizerType" required>
+                            <option value="">Select Type</option>
+                            <option value="Urea">Urea</option>
+                            <option value="NPK">NPK</option>
+                            <option value="DAP">DAP</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Total Bags Available</label>
+                        <input type="number" class="form-control" id="sessionTotalBags" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="sessionStartTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">End Time</label>
+                        <input type="datetime-local" class="form-control" id="sessionEndTime" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-plus-circle"></i> Create Session
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Inventory Modal -->
+<div class="modal fade" id="addInventoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Inventory</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addInventoryForm">
+                    <div class="mb-3">
+                        <label class="form-label">Fertilizer Type</label>
+                        <select class="form-control" id="inventoryFertilizerType" required>
+                            <option value="">Select Type</option>
+                            <option value="Urea">Urea</option>
+                            <option value="NPK">NPK</option>
+                            <option value="DAP">DAP</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Quantity (bags)</label>
+                        <input type="number" class="form-control" id="inventoryQuantity" min="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" id="inventoryLocation">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-box-seam"></i> Add Inventory
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Location Modal -->
+<div class="modal fade" id="addLocationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Location</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#lgaTab">LGA</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#wardTab">Ward</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#puTab">Polling Unit</button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="lgaTab">
+                        <form id="addLgaForm">
+                            <div class="mb-3">
+                                <label class="form-label">LGA Name</label>
+                                <input type="text" class="form-control" id="lgaName" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Add LGA</button>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="wardTab">
+                        <form id="addWardForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select LGA</label>
+                                <select class="form-control" id="wardLgaSelect" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Ward Name</label>
+                                <input type="text" class="form-control" id="wardName" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Add Ward</button>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="puTab">
+                        <form id="addPuForm">
+                            <div class="mb-3">
+                                <label class="form-label">Select LGA</label>
+                                <select class="form-control" id="puLgaSelect" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Select Ward</label>
+                                <select class="form-control" id="puWardSelect" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Polling Unit Name</label>
+                                <input type="text" class="form-control" id="puName" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Add Polling Unit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Request Modal -->
+<div class="modal fade" id="submitRequestModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Submit Fertilizer Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="submitRequestForm">
+                    <div class="mb-3">
+                        <label class="form-label">Select Session</label>
+                        <select class="form-control" id="requestSessionSelect" required></select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Number of Bags Requested</label>
+                        <input type="number" class="form-control" id="requestBags" min="1" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="bi bi-send"></i> Submit Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- QR Code Scanner Library -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+<!-- Main JavaScript -->
+<script>
+// Global variables
+let currentUser = null;
+let currentUserType = null;
+
+// ============= INITIALIZATION =============
+
+$(document).ready(function() {
+    // Check if user is already logged in
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        currentUserType = currentUser.user_type;
+        showDashboard();
+    }
+    
+    // Setup event listeners
+    setupEventListeners();
+    
+    // Clean up camera when modal is closed
+    $('#qrScannerModal').on('hidden.bs.modal', function () {
+        stopCameraScanning();
+        $('#qrManualInput').val('');
+        $('#qrVerificationResult').html('');
+        $('#uploadPreview').hide();
+        $('#qrImageUpload').val('');
+    });
+});
+
+function setupEventListeners() {
+    // Login form
+    $('#loginForm').on('submit', handleLogin);
+    
+    // Register form
+    $('#registerForm').on('submit', handleRegister);
+    
+    // Session form
+    $('#createSessionForm').on('submit', handleCreateSession);
+    
+    // Inventory form
+    $('#addInventoryForm').on('submit', handleAddInventory);
+    
+    // Location forms
+    $('#addLgaForm').on('submit', handleAddLga);
+    $('#addWardForm').on('submit', handleAddWard);
+    $('#addPuForm').on('submit', handleAddPu);
+    
+    // Request form
+    $('#submitRequestForm').on('submit', handleSubmitRequest);
+    
+    // Location cascading dropdowns
+    $('#registerLga').on('change', function() {
+        const lgaId = $(this).val();
+        if (lgaId) {
+            loadWards(lgaId, '#registerWard');
+        }
+    });
+    
+    $('#puLgaSelect').on('change', function() {
+        const lgaId = $(this).val();
+        if (lgaId) {
+            loadWards(lgaId, '#puWardSelect');
+        }
+    });
+    
+    $('#registerWard').on('change', function() {
+        const wardId = $(this).val();
+        if (wardId) {
+            loadPollingUnits(wardId, '#registerPollingUnit');
+        }
+    });
+}
+
+// ============= AUTHENTICATION FUNCTIONS =============
+
+function handleLogin(e) {
+    e.preventDefault();
+    
+    const userId = $('#loginUserId').val();
+    const password = $('#loginPassword').val();
+    
+    $.ajax({
+        url: '/api/login',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ user_id: userId, password: password }),
+        success: function(response) {
+            if (response.success) {
+                currentUser = {
+                    user_id: response.user_id,
+                    user_type: response.user_type,
+                    name: response.name
+                };
+                currentUserType = response.user_type;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: `Welcome back, ${response.name}!`,
+                    timer: 2000
+                });
+                
+                showDashboard();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: xhr.responseJSON?.message || 'Invalid credentials'
+            });
+        }
+    });
+}
+
+function showRegisterModal(type) {
+    $('#registerType').val(type);
+    $('#farmerFields').toggleClass('hidden', type !== 'farmer');
+    $('#officerFields').toggleClass('hidden', type !== 'officer');
+    
+    if (type === 'farmer') {
+        $('#registerIdHint').text('Format: F### (e.g., F001, F123)');
+        $('#registerUserId').attr('pattern', 'F\\d{3}');
+        loadLGAs();
+    } else if (type === 'admin') {
+        $('#registerIdHint').text('Format: A### (e.g., A001)');
+        $('#registerUserId').attr('pattern', 'A\\d{3}');
+    } else if (type === 'officer') {
+        $('#registerIdHint').text('Format: S### (e.g., S001)');
+        $('#registerUserId').attr('pattern', 'S\\d{3}');
+    }
+    
+    new bootstrap.Modal($('#registerModal')).show();
+}
+
+function handleRegister(e) {
+    e.preventDefault();
+    
+    const type = $('#registerType').val();
+    const userId = $('#registerUserId').val();
+    const name = $('#registerName').val();
+    const password = $('#registerPassword').val();
+    
+    let endpoint = '';
+    let data = {};
+    
+    if (type === 'farmer') {
+        endpoint = '/api/register/farmer';
+        data = {
+            farmer_id: userId,
+            name: name,
+            password: password,
+            phone: $('#registerPhone').val(),
+            lga: $('#registerLga option:selected').text(),
+            ward: $('#registerWard option:selected').text(),
+            polling_unit: $('#registerPollingUnit option:selected').text(),
+            farm_size: $('#registerFarmSize').val()
+        };
+    } else if (type === 'admin') {
+        endpoint = '/api/register/admin';
+        data = { admin_id: userId, name: name, password: password };
+    } else if (type === 'officer') {
+        endpoint = '/api/register/officer';
+        data = {
+            officer_id: userId,
+            name: name,
+            password: password,
+            location: $('#registerLocation').val()
+        };
+    }
+    
+    $.ajax({
+        url: endpoint,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registration Successful',
+                    text: 'You can now login with your credentials'
+                });
+                bootstrap.Modal.getInstance($('#registerModal')).hide();
+                $('#registerForm')[0].reset();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Registration Failed',
+                text: xhr.responseJSON?.message || 'An error occurred'
+            });
+        }
+    });
+}
+
+function logout() {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to logout?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, logout'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            currentUserType = null;
+            $('#dashboardPage').hide();
+            $('#loginPage').show();
+            Swal.fire('Logged out!', 'You have been logged out successfully', 'success');
+        }
+    });
+}
+
+// ============= DASHBOARD FUNCTIONS =============
+
+function showDashboard() {
+    $('#loginPage').hide();
+    $('#dashboardPage').show();
+    $('#userNameDisplay').text(currentUser.name);
+    
+    loadSidebarMenu();
+    loadDashboardContent();
+}
+
+function loadSidebarMenu() {
+    let menuItems = [];
+    
+    if (currentUserType === 'admin') {
+        menuItems = [
+            { icon: 'speedometer2', text: 'Dashboard', action: 'loadDashboardContent()' },
+            { icon: 'calendar-event', text: 'Sessions', action: 'loadSessions()' },
+            { icon: 'people', text: 'Farmers', action: 'loadFarmers()' },
+            { icon: 'person-badge', text: 'Store Officers', action: 'loadOfficers()' },
+            { icon: 'box-seam', text: 'Inventory', action: 'loadInventory()' },
+            { icon: 'geo-alt', text: 'Locations', action: 'loadLocations()' },
+            { icon: 'link-45deg', text: 'Blockchain', action: 'loadBlockchain()' },
+            { icon: 'clock-history', text: 'Audit Logs', action: 'loadAuditLogs()' }
+        ];
+    } else if (currentUserType === 'farmer') {
+        menuItems = [
+            { icon: 'speedometer2', text: 'Dashboard', action: 'loadDashboardContent()' },
+            { icon: 'send', text: 'Submit Request', action: 'showSubmitRequestModal()' },
+            { icon: 'list-check', text: 'My Requests', action: 'loadMyRequests()' },
+            { icon: 'qr-code', text: 'My Allocations', action: 'loadMyAllocations()' }
+        ];
+    } else if (currentUserType === 'store_officer') {
+        menuItems = [
+            { icon: 'speedometer2', text: 'Dashboard', action: 'loadDashboardContent()' },
+            { icon: 'qr-code-scan', text: 'Scan QR Code', action: 'showQRScannerModal()' },
+            { icon: 'clock-history', text: 'Pending Distributions', action: 'loadPendingDistributions()' },
+            { icon: 'check-circle', text: 'My Distributions', action: 'loadMyDistributions()' }
+        ];
+    }
+    
+    let menuHtml = '';
+    menuItems.forEach(item => {
+        menuHtml += `
+            <li>
+                <a href="#" onclick="${item.action}; return false;">
+                    <i class="bi bi-${item.icon}"></i> ${item.text}
+                </a>
+            </li>
+        `;
+    });
+    
+    $('#sidebarMenu').html(menuHtml);
+}
+
+function loadDashboardContent() {
+    $('#pageTitle').text('Dashboard');
+    $('#pageSubtitle').text('Overview and Statistics');
+    
+    if (currentUserType === 'admin') {
+        loadAdminDashboard();
+    } else if (currentUserType === 'farmer') {
+        loadFarmerDashboard();
+    } else if (currentUserType === 'store_officer') {
+        loadOfficerDashboard();
+    }
+}
+
+function loadAdminDashboard() {
+    $.ajax({
+        url: '/api/stats/admin',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const stats = response.data;
+                
+                let html = `
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-card green">
+                                <i class="bi bi-people stat-card-icon"></i>
+                                <div class="stat-card-value">${stats.total_farmers}</div>
+                                <div class="stat-card-label">Total Farmers</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card blue">
+                                <i class="bi bi-calendar-event stat-card-icon"></i>
+                                <div class="stat-card-value">${stats.total_sessions}</div>
+                                <div class="stat-card-label">Total Sessions</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card orange">
+                                <i class="bi bi-box-seam stat-card-icon"></i>
+                                <div class="stat-card-value">${stats.total_allocated}</div>
+                                <div class="stat-card-label">Bags Allocated</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card purple">
+                                <i class="bi bi-check-circle stat-card-icon"></i>
+                                <div class="stat-card-value">${stats.total_distributed}</div>
+                                <div class="stat-card-label">Bags Distributed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="content-card">
+                                <div class="content-card-header">
+                                    <div class="content-card-title">Request Status</div>
+                                </div>
+                                <canvas id="requestStatusChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="content-card">
+                                <div class="content-card-header">
+                                    <div class="content-card-title">Session Status</div>
+                                </div>
+                                <canvas id="sessionStatusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+                
+                // Create charts
+                createPieChart('requestStatusChart', stats.request_status);
+                createPieChart('sessionStatusChart', stats.session_status);
+            }
+        }
+    });
+}
+
+function loadFarmerDashboard() {
+    $.ajax({
+        url: `/api/requests/farmer/${currentUser.user_id}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const requests = response.data;
+                const pending = requests.filter(r => r.status === 'pending').length;
+                const approved = requests.filter(r => r.status === 'approved').length;
+                const distributed = requests.filter(r => r.status === 'distributed').length;
+                const completed = requests.filter(r => r.status === 'completed').length;
+                
+                let html = `
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="stat-card orange">
+                                <i class="bi bi-clock stat-card-icon"></i>
+                                <div class="stat-card-value">${pending}</div>
+                                <div class="stat-card-label">Pending Requests</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card green">
+                                <i class="bi bi-check-circle stat-card-icon"></i>
+                                <div class="stat-card-value">${approved}</div>
+                                <div class="stat-card-label">Approved</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card blue">
+                                <i class="bi bi-box-seam stat-card-icon"></i>
+                                <div class="stat-card-value">${distributed}</div>
+                                <div class="stat-card-label">Distributed</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card purple">
+                                <i class="bi bi-award stat-card-icon"></i>
+                                <div class="stat-card-value">${completed}</div>
+                                <div class="stat-card-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card mt-4">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Recent Requests</div>
+                            <button class="btn btn-success btn-sm" onclick="showSubmitRequestModal()">
+                                <i class="bi bi-plus-circle"></i> New Request
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Session</th>
+                                        <th>Fertilizer</th>
+                                        <th>Requested</th>
+                                        <th>Allocated</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                requests.slice(0, 10).forEach(req => {
+                    html += `
+                        <tr>
+                            <td>${req.session_name}</td>
+                            <td>${req.fertilizer_type}</td>
+                            <td>${req.requested_bags}</td>
+                            <td>${req.allocated_bags || 0}</td>
+                            <td><span class="badge-status badge-${req.status}">${req.status.toUpperCase()}</span></td>
+                            <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function loadOfficerDashboard() {
+    $.ajax({
+        url: '/api/distributions/pending',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const pending = response.data;
+                
+                $.ajax({
+                    url: `/api/distributions/officer/${currentUser.user_id}`,
+                    method: 'GET',
+                    success: function(response2) {
+                        if (response2.success) {
+                            const myDistributions = response2.data;
+                            
+                            let html = `
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="stat-card orange">
+                                            <i class="bi bi-clock stat-card-icon"></i>
+                                            <div class="stat-card-value">${pending.length}</div>
+                                            <div class="stat-card-label">Pending Distributions</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="stat-card green">
+                                            <i class="bi bi-check-circle stat-card-icon"></i>
+                                            <div class="stat-card-value">${myDistributions.length}</div>
+                                            <div class="stat-card-label">My Distributions</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="content-card mt-4">
+                                    <div class="content-card-header">
+                                        <div class="content-card-title">Pending Distributions</div>
+                                        <button class="btn btn-primary btn-sm" onclick="showQRScannerModal()">
+                                            <i class="bi bi-qr-code-scan"></i> Scan QR Code
+                                        </button>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Farmer</th>
+                                                    <th>Session</th>
+                                                    <th>Fertilizer</th>
+                                                    <th>Allocated Bags</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                            `;
+                            
+                            pending.slice(0, 10).forEach(dist => {
+                                html += `
+                                    <tr>
+                                        <td>${dist.farmer_name}</td>
+                                        <td>${dist.session_name}</td>
+                                        <td>${dist.fertilizer_type}</td>
+                                        <td>${dist.allocated_bags}</td>
+                                        <td>${new Date(dist.created_at).toLocaleDateString()}</td>
+                                    </tr>
+                                `;
+                            });
+                            
+                            html += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            $('#contentArea').html(html);
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+// ============= SESSION MANAGEMENT =============
+
+function loadSessions() {
+    $('#pageTitle').text('Distribution Sessions');
+    $('#pageSubtitle').text('Manage distribution sessions');
+    
+    $.ajax({
+        url: '/api/sessions',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const sessions = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">All Sessions</div>
+                            <button class="btn btn-success btn-sm" onclick="showCreateSessionModal()">
+                                <i class="bi bi-plus-circle"></i> Create Session
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Fertilizer Type</th>
+                                        <th>Total Bags</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                sessions.forEach(session => {
+                    const canAllocate = session.status === 'active' && new Date(session.end_time) < new Date();
+                    
+                    html += `
+                        <tr>
+                            <td>${session.id}</td>
+                            <td>${session.name}</td>
+                            <td>${session.fertilizer_type}</td>
+                            <td>${session.total_bags}</td>
+                            <td>${new Date(session.start_time).toLocaleString()}</td>
+                            <td>${new Date(session.end_time).toLocaleString()}</td>
+                            <td><span class="badge-status badge-${session.status}">${session.status.toUpperCase()}</span></td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewSessionRequests(${session.id})">
+                                    <i class="bi bi-eye"></i> View Requests
+                                </button>
+                                ${canAllocate ? `
+                                    <button class="btn btn-success btn-sm" onclick="allocateFertilizer(${session.id})">
+                                        <i class="bi bi-check-circle"></i> Allocate
+                                    </button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function showCreateSessionModal() {
+    // Set default start time to now
+    const now = new Date();
+    const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    $('#sessionStartTime').val(localDateTime);
+    
+    // Set default end time to 24 hours from now
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+    const tomorrowDateTime = new Date(tomorrow.getTime() - tomorrow.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    $('#sessionEndTime').val(tomorrowDateTime);
+    
+    new bootstrap.Modal($('#createSessionModal')).show();
+}
+
+function handleCreateSession(e) {
+    e.preventDefault();
+    
+    const data = {
+        name: $('#sessionName').val(),
+        fertilizer_type: $('#sessionFertilizerType').val(),
+        total_bags: parseInt($('#sessionTotalBags').val()),
+        start_time: $('#sessionStartTime').val(),
+        end_time: $('#sessionEndTime').val(),
+        created_by: currentUser.user_id
+    };
+    
+    $.ajax({
+        url: '/api/sessions',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Session Created',
+                    text: 'Distribution session created successfully'
+                });
+                bootstrap.Modal.getInstance($('#createSessionModal')).hide();
+                $('#createSessionForm')[0].reset();
+                loadSessions();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON?.message || 'Failed to create session'
+            });
+        }
+    });
+}
+
+function viewSessionRequests(sessionId) {
+    $.ajax({
+        url: `/api/requests/session/${sessionId}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const requests = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Session Requests</div>
+                            <button class="btn btn-secondary btn-sm" onclick="loadSessions()">
+                                <i class="bi bi-arrow-left"></i> Back
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Farmer ID</th>
+                                        <th>Farmer Name</th>
+                                        <th>Farm Size</th>
+                                        <th>LGA</th>
+                                        <th>Ward</th>
+                                        <th>Requested</th>
+                                        <th>Allocated</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                requests.forEach(req => {
+                    html += `
+                        <tr>
+                            <td>${req.farmer_id}</td>
+                            <td>${req.farmer_name}</td>
+                            <td>${req.farm_size || 0} ha</td>
+                            <td>${req.lga || 'N/A'}</td>
+                            <td>${req.ward || 'N/A'}</td>
+                            <td>${req.requested_bags}</td>
+                            <td>${req.allocated_bags || 0}</td>
+                            <td><span class="badge-status badge-${req.status}">${req.status.toUpperCase()}</span></td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function allocateFertilizer(sessionId) {
+    Swal.fire({
+        title: 'Allocate Fertilizer?',
+        text: 'This will allocate fertilizer to all pending requests using equity-based algorithm',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Allocate',
+        confirmButtonColor: '#28a745'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/api/allocate/${sessionId}`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ admin_id: currentUser.user_id }),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Allocation Complete',
+                            text: response.message,
+                            timer: 3000
+                        });
+                        loadSessions();
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Allocation Failed',
+                        text: xhr.responseJSON?.message || 'Failed to allocate fertilizer'
+                    });
+                }
+            });
+        }
+    });
+}
+
+// ============= INVENTORY MANAGEMENT =============
+
+function loadInventory() {
+    $('#pageTitle').text('Inventory Management');
+    $('#pageSubtitle').text('Manage fertilizer inventory');
+    
+    $.ajax({
+        url: '/api/inventory',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const inventory = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Current Inventory</div>
+                            <button class="btn btn-success btn-sm" onclick="showAddInventoryModal()">
+                                <i class="bi bi-plus-circle"></i> Add Inventory
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fertilizer Type</th>
+                                        <th>Quantity</th>
+                                        <th>Unit</th>
+                                        <th>Location</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                inventory.forEach(item => {
+                    html += `
+                        <tr>
+                            <td><strong>${item.fertilizer_type}</strong></td>
+                            <td>${item.quantity}</td>
+                            <td>${item.unit}</td>
+                            <td>${item.location || 'N/A'}</td>
+                            <td>${new Date(item.last_updated).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function showAddInventoryModal() {
+    new bootstrap.Modal($('#addInventoryModal')).show();
+}
+
+function handleAddInventory(e) {
+    e.preventDefault();
+    
+    const data = {
+        fertilizer_type: $('#inventoryFertilizerType').val(),
+        quantity: parseInt($('#inventoryQuantity').val()),
+        location: $('#inventoryLocation').val()
+    };
+    
+    $.ajax({
+        url: '/api/inventory',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Inventory Added',
+                    text: 'Inventory updated successfully'
+                });
+                bootstrap.Modal.getInstance($('#addInventoryModal')).hide();
+                $('#addInventoryForm')[0].reset();
+                loadInventory();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON?.message || 'Failed to add inventory'
+            });
+        }
+    });
+}
+
+// ============= LOCATION MANAGEMENT =============
+
+function loadLocations() {
+    $('#pageTitle').text('Location Management');
+    $('#pageSubtitle').text('Manage LGAs, Wards, and Polling Units');
+    
+    let html = `
+        <div class="content-card">
+            <div class="content-card-header">
+                <div class="content-card-title">Locations Hierarchy</div>
+                <button class="btn btn-success btn-sm" onclick="showAddLocationModal()">
+                    <i class="bi bi-plus-circle"></i> Add Location
+                </button>
+            </div>
+            <div id="locationsContent">Loading...</div>
+        </div>
+    `;
+    
+    $('#contentArea').html(html);
+    
+    $.ajax({
+        url: '/api/locations/lga',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const lgas = response.data;
+                
+                if (lgas.length === 0) {
+                    $('#locationsContent').html('<p class="text-muted p-3">No locations added yet. Click "Add Location" to get started.</p>');
+                    return;
+                }
+                
+                let locHtml = '<div class="accordion" id="locationAccordion">';
+                
+                lgas.forEach((lga, index) => {
+                    locHtml += `
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lga${lga.id}" onclick="loadWardsForLga(${lga.id})">
+                                    <i class="bi bi-geo-alt me-2"></i> ${lga.name}
+                                </button>
+                            </h2>
+                            <div id="lga${lga.id}" class="accordion-collapse collapse" data-bs-parent="#locationAccordion">
+                                <div class="accordion-body">
+                                    <div id="lga${lga.id}Content">
+                                        <div class="text-center">
+                                            <div class="spinner-border spinner-border-sm" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                locHtml += '</div>';
+                $('#locationsContent').html(locHtml);
+            }
+        }
+    });
+}
+
+function loadWardsForLga(lgaId) {
+    // Check if already loaded
+    if ($(`#lga${lgaId}Content`).find('.ward-list').length > 0) {
+        return;
+    }
+    
+    $.ajax({
+        url: `/api/locations/ward/${lgaId}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const wards = response.data;
+                
+                if (wards.length === 0) {
+                    $(`#lga${lgaId}Content`).html('<p class="text-muted">No wards added for this LGA yet.</p>');
+                    return;
+                }
+                
+                let wardsHtml = '<div class="ward-list"><h6 class="mb-3"><i class="bi bi-signpost-2"></i> Wards:</h6>';
+                
+                wards.forEach(ward => {
+                    wardsHtml += `
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <h6 class="card-title mb-2">
+                                    <i class="bi bi-signpost-2"></i> ${ward.name}
+                                    <button class="btn btn-sm btn-link float-end" onclick="loadPollingUnitsForWard(${ward.id})">
+                                        <i class="bi bi-eye"></i> View Polling Units
+                                    </button>
+                                </h6>
+                                <div id="ward${ward.id}Units" class="mt-2" style="display: none;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                wardsHtml += '</div>';
+                $(`#lga${lgaId}Content`).html(wardsHtml);
+            }
+        }
+    });
+}
+
+function loadPollingUnitsForWard(wardId) {
+    const container = $(`#ward${wardId}Units`);
+    
+    // Toggle visibility
+    if (container.is(':visible')) {
+        container.slideUp();
+        return;
+    }
+    
+    // Check if already loaded
+    if (container.find('.polling-unit-list').length > 0) {
+        container.slideDown();
+        return;
+    }
+    
+    container.html('<div class="text-center"><div class="spinner-border spinner-border-sm"></div></div>').show();
+    
+    $.ajax({
+        url: `/api/locations/polling_unit/${wardId}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const units = response.data;
+                
+                if (units.length === 0) {
+                    container.html('<p class="text-muted small">No polling units added yet.</p>');
+                    return;
+                }
+                
+                let unitsHtml = '<div class="polling-unit-list"><strong class="small">Polling Units:</strong><ul class="list-group list-group-flush mt-2">';
+                
+                units.forEach(unit => {
+                    unitsHtml += `
+                        <li class="list-group-item small">
+                            <i class="bi bi-house-door"></i> ${unit.name}
+                        </li>
+                    `;
+                });
+                
+                unitsHtml += '</ul></div>';
+                container.html(unitsHtml).slideDown();
+            }
+        },
+        error: function() {
+            container.html('<p class="text-danger small">Error loading polling units</p>');
+        }
+    });
+}
+
+function showAddLocationModal() {
+    loadLGAsForLocationModal();
+    
+    // Clear all form fields
+    $('#lgaName').val('');
+    $('#wardName').val('');
+    $('#puName').val('');
+    $('#wardLgaSelect').val('');
+    $('#puLgaSelect').val('');
+    $('#puWardSelect').html('<option value="">Select Ward</option>');
+    
+    new bootstrap.Modal($('#addLocationModal')).show();
+}
+
+function loadLGAsForLocationModal() {
+    $.ajax({
+        url: '/api/locations/lga',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const lgas = response.data;
+                let options = '<option value="">Select LGA</option>';
+                lgas.forEach(lga => {
+                    options += `<option value="${lga.id}">${lga.name}</option>`;
+                });
+                
+                // Only update if the dropdowns are empty or need refreshing
+                const currentWardLgaValue = $('#wardLgaSelect').val();
+                const currentPuLgaValue = $('#puLgaSelect').val();
+                
+                $('#wardLgaSelect').html(options);
+                $('#puLgaSelect').html(options);
+                
+                // Restore selected values if they exist
+                if (currentWardLgaValue) {
+                    $('#wardLgaSelect').val(currentWardLgaValue);
+                }
+                if (currentPuLgaValue) {
+                    $('#puLgaSelect').val(currentPuLgaValue);
+                }
+            }
+        }
+    });
+}
+
+function handleAddLga(e) {
+    e.preventDefault();
+    
+    $.ajax({
+        url: '/api/locations/lga',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ name: $('#lgaName').val() }),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire('Success', 'LGA added successfully', 'success');
+                $('#lgaName').val('');
+                loadLGAsForLocationModal();
+                loadLocations();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire('Error', xhr.responseJSON?.message || 'Failed to add LGA', 'error');
+        }
+    });
+}
+
+function handleAddWard(e) {
+    e.preventDefault();
+    
+    $.ajax({
+        url: '/api/locations/ward',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            name: $('#wardName').val(),
+            lga_id: $('#wardLgaSelect').val()
+        }),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire('Success', 'Ward added successfully', 'success');
+                $('#wardName').val('');
+                $('#wardLgaSelect').val('');
+                loadLGAsForLocationModal();
+                loadLocations();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire('Error', xhr.responseJSON?.message || 'Failed to add Ward', 'error');
+        }
+    });
+}
+
+function handleAddPu(e) {
+    e.preventDefault();
+    
+    const wardId = $('#puWardSelect').val();
+    const puName = $('#puName').val();
+    
+    if (!wardId) {
+        Swal.fire('Error', 'Please select a ward first', 'error');
+        return;
+    }
+    
+    if (!puName) {
+        Swal.fire('Error', 'Please enter polling unit name', 'error');
+        return;
+    }
+    
+    $.ajax({
+        url: '/api/locations/polling_unit',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            name: puName,
+            ward_id: wardId
+        }),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire('Success', 'Polling Unit added successfully', 'success');
+                $('#puName').val('');
+                $('#puLgaSelect').val('');
+                $('#puWardSelect').html('<option value="">Select Ward</option>');
+                loadLGAsForLocationModal();
+                loadLocations();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire('Error', xhr.responseJSON?.message || 'Failed to add Polling Unit', 'error');
+        }
+    });
+}
+
+function loadLGAs() {
+    $.ajax({
+        url: '/api/locations/lga',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const lgas = response.data;
+                let options = '<option value="">Select LGA</option>';
+                lgas.forEach(lga => {
+                    options += `<option value="${lga.id}">${lga.name}</option>`;
+                });
+                $('#registerLga').html(options);
+            }
+        }
+    });
+}
+
+function loadWards(lgaId, targetSelect) {
+    $.ajax({
+        url: `/api/locations/ward/${lgaId}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const wards = response.data;
+                let options = '<option value="">Select Ward</option>';
+                wards.forEach(ward => {
+                    options += `<option value="${ward.id}">${ward.name}</option>`;
+                });
+                $(targetSelect).html(options).prop('disabled', false);
+            }
+        },
+        error: function() {
+            $(targetSelect).html('<option value="">No wards available</option>').prop('disabled', true);
+        }
+    });
+}
+
+function loadPollingUnits(wardId, targetSelect) {
+    // Only for farmer registration, not for the PU form
+    if (targetSelect !== '#registerPollingUnit') {
+        return;
+    }
+    
+    $.ajax({
+        url: `/api/locations/polling_unit/${wardId}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const units = response.data;
+                let options = '<option value="">Select Polling Unit</option>';
+                units.forEach(unit => {
+                    options += `<option value="${unit.id}">${unit.name}</option>`;
+                });
+                $(targetSelect).html(options).prop('disabled', false);
+            }
+        },
+        error: function() {
+            $(targetSelect).html('<option value="">No polling units available</option>').prop('disabled', true);
+        }
+    });
+}
+
+// ============= FARMER FUNCTIONS =============
+
+function showSubmitRequestModal() {
+    // Load active sessions
+    $.ajax({
+        url: '/api/sessions/active',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const sessions = response.data;
+                let options = '<option value="">Select Session</option>';
+                sessions.forEach(session => {
+                    options += `<option value="${session.id}">${session.name} - ${session.fertilizer_type} (${session.total_bags} bags)</option>`;
+                });
+                $('#requestSessionSelect').html(options);
+                new bootstrap.Modal($('#submitRequestModal')).show();
+            }
+        }
+    });
+}
+
+function handleSubmitRequest(e) {
+    e.preventDefault();
+    
+    const data = {
+        farmer_id: currentUser.user_id,
+        session_id: $('#requestSessionSelect').val(),
+        requested_bags: parseInt($('#requestBags').val())
+    };
+    
+    $.ajax({
+        url: '/api/requests',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Request Submitted',
+                    text: 'Your fertilizer request has been submitted successfully'
+                });
+                bootstrap.Modal.getInstance($('#submitRequestModal')).hide();
+                $('#submitRequestForm')[0].reset();
+                loadMyRequests();
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: xhr.responseJSON?.message || 'Failed to submit request'
+            });
+        }
+    });
+}
+
+function loadMyRequests() {
+    $('#pageTitle').text('My Requests');
+    $('#pageSubtitle').text('View all your fertilizer requests');
+    
+    $.ajax({
+        url: `/api/requests/farmer/${currentUser.user_id}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const requests = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">All My Requests</div>
+                            <button class="btn btn-success btn-sm" onclick="showSubmitRequestModal()">
+                                <i class="bi bi-plus-circle"></i> New Request
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Session</th>
+                                        <th>Fertilizer Type</th>
+                                        <th>Requested</th>
+                                        <th>Allocated</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                requests.forEach(req => {
+                    html += `
+                        <tr>
+                            <td>${req.session_name}</td>
+                            <td>${req.fertilizer_type}</td>
+                            <td>${req.requested_bags}</td>
+                            <td>${req.allocated_bags || 0}</td>
+                            <td><span class="badge-status badge-${req.status}">${req.status.toUpperCase()}</span></td>
+                            <td>${new Date(req.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function loadMyAllocations() {
+    $('#pageTitle').text('My Allocations');
+    $('#pageSubtitle').text('View approved allocations with QR codes');
+    
+    $.ajax({
+        url: `/api/requests/farmer/${currentUser.user_id}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const requests = response.data.filter(r => r.status !== 'pending');
+                
+                if (requests.length === 0) {
+                    $('#contentArea').html(`
+                        <div class="content-card text-center">
+                            <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                            <p class="mt-3 text-muted">No allocations yet. Submit a request first!</p>
+                        </div>
+                    `);
+                    return;
+                }
+                
+                let html = `<div class="row">`;
+                
+                requests.forEach(req => {
+                    const qrDataJson = JSON.stringify({
+                        request_id: req.id,
+                        farmer_id: req.farmer_id,
+                        session_id: req.session_id,
+                        allocated_bags: req.allocated_bags,
+                        blockchain_hash: req.blockchain_hash
+                    });
+                    
+                    html += `
+                        <div class="col-md-6 mb-3">
+                            <div class="content-card">
+                                <h5>${req.session_name}</h5>
+                                <p><strong>Fertilizer:</strong> ${req.fertilizer_type}</p>
+                                <p><strong>Allocated Bags:</strong> ${req.allocated_bags}</p>
+                                <p><strong>Status:</strong> <span class="badge-status badge-${req.status}">${req.status.toUpperCase()}</span></p>
+                                ${req.qr_code ? `
+                                    <div class="text-center">
+                                        <img src="${req.qr_code}" style="max-width: 200px;" class="img-fluid mb-2" id="qr-${req.id}">
+                                        <div class="d-grid gap-2">
+                                            <button class="btn btn-primary btn-sm" onclick='showQRCodeModal(${JSON.stringify(req)})'>
+                                                <i class="bi bi-fullscreen"></i> View Full QR Code
+                                            </button>
+                                            <button class="btn btn-success btn-sm" onclick="downloadQRFromSrc('qr-${req.id}', '${req.farmer_id}_allocation.png')">
+                                                <i class="bi bi-download"></i> Download QR Code
+                                            </button>
+                                            <button class="btn btn-info btn-sm" onclick='copyQRDataInline(${JSON.stringify(qrDataJson)})'>
+                                                <i class="bi bi-clipboard"></i> Copy QR Data
+                                            </button>
+                                        </div>
+                                    </div>
+                                ` : '<p class="text-muted text-center">QR Code not generated yet</p>'}
+                                ${req.status === 'distributed' && !req.acknowledged ? `
+                                    <button class="btn btn-success w-100 mt-3" onclick="acknowledgeReceipt(${req.id})">
+                                        <i class="bi bi-check-circle"></i> Acknowledge Receipt
+                                    </button>
+                                ` : ''}
+                                ${req.status === 'completed' ? `
+                                    <div class="alert alert-success mt-3 mb-0">
+                                        <i class="bi bi-check-circle-fill"></i> Transaction Completed
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function downloadQRFromSrc(imageId, filename) {
+    const qrImage = document.getElementById(imageId);
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = qrImage.src;
+    link.click();
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Downloaded!',
+        text: 'QR code saved successfully',
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
+
+function copyQRDataInline(qrData) {
+    const textarea = document.createElement('textarea');
+    textarea.value = qrData;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Copied!',
+        text: 'QR data copied to clipboard. You can paste and send it to the store officer.',
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
+
+function showQRCodeModal(request) {
+    const qrDataJson = JSON.stringify({
+        request_id: request.id,
+        farmer_id: request.farmer_id,
+        session_id: request.session_id,
+        allocated_bags: request.allocated_bags,
+        blockchain_hash: request.blockchain_hash
+    }, null, 2);
+    
+    const content = `
+        <div class="qr-code-display">
+            <h4>${request.session_name}</h4>
+            <p><strong>Fertilizer:</strong> ${request.fertilizer_type}</p>
+            <p><strong>Allocated Bags:</strong> ${request.allocated_bags}</p>
+            <img src="${request.qr_code}" class="img-fluid" id="qrCodeImage">
+            
+            <div class="mt-3 d-flex gap-2 justify-content-center">
+                <button class="btn btn-success" onclick="downloadQRCode('${request.farmer_id}_QR.png')">
+                    <i class="bi bi-download"></i> Download QR Code
+                </button>
+                <button class="btn btn-info" onclick="copyQRData()">
+                    <i class="bi bi-clipboard"></i> Copy QR Data
+                </button>
+            </div>
+            
+            <p class="mt-3"><small><strong>Instructions:</strong> Show this QR code to the store officer for collection. You can also copy the data below and send it to the officer.</small></p>
+            
+            <div class="mt-2">
+                <label class="form-label"><strong>QR Code Data (for manual verification):</strong></label>
+                <textarea class="form-control" id="qrDataText" rows="4" readonly>${qrDataJson}</textarea>
+            </div>
+            
+            <div class="hash-display mt-3">
+                Blockchain Hash: ${request.blockchain_hash}
+            </div>
+        </div>
+    `;
+    
+    $('#qrCodeContent').html(content);
+    new bootstrap.Modal($('#qrCodeModal')).show();
+}
+
+function downloadQRCode(filename) {
+    const qrImage = document.getElementById('qrCodeImage');
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = qrImage.src;
+    link.click();
+}
+
+function copyQRData() {
+    const qrDataText = document.getElementById('qrDataText');
+    qrDataText.select();
+    document.execCommand('copy');
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Copied!',
+        text: 'QR data copied to clipboard',
+        timer: 2000,
+        showConfirmButton: false
+    });
+}
+
+function acknowledgeReceipt(requestId) {
+    Swal.fire({
+        title: 'Acknowledge Receipt?',
+        text: 'Confirm that you have received the fertilizer',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, I received it'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/api/acknowledge',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    request_id: requestId,
+                    farmer_id: currentUser.user_id
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('Success', 'Receipt acknowledged successfully', 'success');
+                        loadMyAllocations();
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire('Error', xhr.responseJSON?.message || 'Failed to acknowledge', 'error');
+                }
+            });
+        }
+    });
+}
+
+// ============= STORE OFFICER FUNCTIONS =============
+
+let cameraStream = null;
+let scanningInterval = null;
+
+function showQRScannerModal() {
+    $('#qrManualInput').val('');
+    $('#qrVerificationResult').html('');
+    $('#uploadPreview').hide();
+    new bootstrap.Modal($('#qrScannerModal')).show();
+}
+
+// Handle QR Image Upload
+function handleQRImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        $('#uploadedImage').attr('src', e.target.result);
+        $('#uploadPreview').show();
+    };
+    reader.readAsDataURL(file);
+}
+
+// Process uploaded QR image
+function processQRImage() {
+    const img = document.getElementById('uploadedImage');
+    const canvas = document.getElementById('qrCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+    if (typeof jsQR !== 'undefined') {
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        
+        if (code) {
+            $('#qrManualInput').val(code.data);
+            
+            // Switch to manual tab and show success
+            $('#manual-tab').tab('show');
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'QR Code Read!',
+                text: 'QR code data has been extracted. Click "Verify QR Code" to proceed.',
+                timer: 3000
+            });
+            
+            // Auto-verify
+            setTimeout(() => {
+                verifyQRCode();
+            }, 1000);
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Cannot Read QR Code',
+                text: 'Please ensure the image is clear and contains a valid QR code.'
+            });
+        }
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Library Not Loaded',
+            text: 'QR scanner library failed to load. Please use manual entry.'
+        });
+    }
+}
+
+// Start camera for scanning
+function startCameraScanning() {
+    const video = document.getElementById('qrVideo');
+    const statusDiv = document.getElementById('cameraStatus');
+    const canvas = document.getElementById('qrScanCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        statusDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i> 
+                Camera not supported on this browser. Please use Chrome or Firefox.
+            </div>
+        `;
+        return;
+    }
+    
+    statusDiv.innerHTML = '<div class="spinner-border text-primary"></div><p class="mt-2">Starting camera...</p>';
+    
+    navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+    })
+    .then(function(stream) {
+        cameraStream = stream;
+        video.srcObject = stream;
+        video.setAttribute('playsinline', true);
+        video.style.display = 'block';
+        video.play();
+        
+        statusDiv.innerHTML = `
+            <div class="alert alert-success">
+                <i class="bi bi-camera-video"></i> Camera Active - Point at QR Code
+            </div>
+            <button class="btn btn-danger" onclick="stopCameraScanning()">
+                <i class="bi bi-camera-video-off"></i> Stop Camera
+            </button>
+        `;
+        
+        // Start scanning
+        if (typeof jsQR !== 'undefined') {
+            scanningInterval = setInterval(() => {
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, imageData.width, imageData.height);
+                    
+                    if (code) {
+                        stopCameraScanning();
+                        $('#qrManualInput').val(code.data);
+                        $('#manual-tab').tab('show');
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'QR Code Scanned!',
+                            text: 'QR code detected. Verifying...',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        
+                        setTimeout(() => {
+                            verifyQRCode();
+                        }, 1000);
+                    }
+                }
+            }, 300);
+        } else {
+            statusDiv.innerHTML += `
+                <div class="alert alert-warning mt-2">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    QR scanner library not loaded. Use image upload or manual entry.
+                </div>
+            `;
+        }
+    })
+    .catch(function(err) {
+        console.error('Camera error:', err);
+        statusDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle"></i> 
+                <strong>Camera Access Denied</strong><br>
+                ${err.message || 'Please enable camera permissions in your browser settings.'}
+            </div>
+            <button class="btn btn-success mt-2" onclick="startCameraScanning()">
+                <i class="bi bi-arrow-clockwise"></i> Try Again
+            </button>
+        `;
+    });
+}
+
+function stopCameraScanning() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    
+    if (scanningInterval) {
+        clearInterval(scanningInterval);
+        scanningInterval = null;
+    }
+    
+    const video = document.getElementById('qrVideo');
+    video.style.display = 'none';
+    video.srcObject = null;
+    
+    document.getElementById('cameraStatus').innerHTML = `
+        <button class="btn btn-success" onclick="startCameraScanning()">
+            <i class="bi bi-camera-video"></i> Start Camera
+        </button>
+    `;
+}
+
+function verifyQRCode() {
+    let qrData = $('#qrManualInput').val().trim();
+    
+    if (!qrData) {
+        Swal.fire('Error', 'Please enter QR code data', 'error');
+        return;
+    }
+    
+    // Try to parse and validate JSON
+    try {
+        const testParse = JSON.parse(qrData);
+        if (!testParse.request_id || !testParse.blockchain_hash) {
+            Swal.fire('Error', 'Invalid QR code format. Missing required fields (request_id or blockchain_hash).', 'error');
+            return;
+        }
+    } catch (e) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid QR Code Format',
+            html: '<p>Please ensure you copied the complete data including { and }</p><small>Error: ' + e.message + '</small>'
+        });
+        return;
+    }
+    
+    const data = { qr_data: qrData };
+    
+    $.ajax({
+        url: '/api/verify_qr',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                const req = response.data;
+                const resultHtml = `
+                    <div class="p-3 bg-success text-white">
+                        <h5><i class="bi bi-check-circle"></i> QR Code Verified Successfully!</h5>
+                        <hr class="bg-white">
+                        <div class="row">
+                            <div class="col-6"><strong>Farmer:</strong></div>
+                            <div class="col-6">${req.farmer_name} (${req.farmer_id})</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Session:</strong></div>
+                            <div class="col-6">${req.session_name}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Fertilizer:</strong></div>
+                            <div class="col-6">${req.fertilizer_type}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6"><strong>Bags:</strong></div>
+                            <div class="col-6"><span class="badge bg-light text-dark">${req.allocated_bags}</span></div>
+                        </div>
+                        <hr class="bg-white">
+                        <p class="mb-2 small">Blockchain Hash: ${req.blockchain_hash.substring(0, 30)}...</p>
+                        <button class="btn btn-light w-100 mt-2" onclick="distributeFertilizer(${req.id})">
+                            <i class="bi bi-box-seam"></i> Distribute ${req.allocated_bags} Bags Now
+                        </button>
+                    </div>
+                `;
+                $('#qrVerificationResult').html(resultHtml);
+                
+                // Play success sound (if available)
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYHGGm98OScTgwOUKrk87hlGwU7k9n0yoUsBSh+zPLaizsIGGS57OihUBELTKXh8bllHAU2jdXzzogvBSl+zPDamjsIHGi68OajTw0PTqvl9LhlGgU8k9n0yYQtBSh+zPDZmTsIHGi68OSkTxANT6zl9LhlGQU8k9j0yoQtBSh9y/DamjsIHWm88OSkUA8NTqzl9LhlGQU+lNn0yYQtBSh8y/DZmTwIHWm78OSkTxANUKvl87dlGQU+lNn0yoQtBSh8y/DZmTsIHWm78OSkUA8NU6zl87doGwU+k9n0yoMtBSp8y/DYmT0IHWm68OWkTxAMU6vl87dlGgU+ktj0y4MtBSp8y/HXmD0IHmm58OWjUA8MUqrl87dlGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4MtBSh8y/HYmD0IHmm58OSkUA8MUqvl87doGgU+ktj0y4M=');
+                audio.play().catch(() => {});
+            }
+        },
+        error: function(xhr) {
+            const message = xhr.responseJSON?.message || 'Invalid QR code or verification failed';
+            $('#qrVerificationResult').html(`
+                <div class="p-3 bg-danger text-white">
+                    <h5><i class="bi bi-x-circle"></i> Verification Failed</h5>
+                    <hr class="bg-white">
+                    <p class="mb-0">${message}</p>
+                </div>
+            `);
+        }
+    });
+}
+
+function distributeFertilizer(requestId) {
+    Swal.fire({
+        title: 'Distribute Fertilizer?',
+        text: 'Confirm distribution to this farmer',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Distribute'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/api/distribute',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    request_id: requestId,
+                    officer_id: currentUser.user_id
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire('Success', 'Fertilizer distributed successfully', 'success');
+                        bootstrap.Modal.getInstance($('#qrScannerModal')).hide();
+                        $('#qrManualInput').val('');
+                        $('#qrVerificationResult').html('');
+                        loadPendingDistributions();
+                    }
+                },
+                error: function(xhr) {
+                    Swal.fire('Error', xhr.responseJSON?.message || 'Distribution failed', 'error');
+                }
+            });
+        }
+    });
+}
+
+function loadPendingDistributions() {
+    $('#pageTitle').text('Pending Distributions');
+    $('#pageSubtitle').text('Farmers awaiting fertilizer distribution');
+    
+    $.ajax({
+        url: '/api/distributions/pending',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const distributions = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Pending Distributions (${distributions.length})</div>
+                            <button class="btn btn-primary btn-sm" onclick="showQRScannerModal()">
+                                <i class="bi bi-qr-code-scan"></i> Scan QR Code
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Farmer ID</th>
+                                        <th>Farmer Name</th>
+                                        <th>Session</th>
+                                        <th>Fertilizer</th>
+                                        <th>Allocated Bags</th>
+                                        <th>Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                distributions.forEach(dist => {
+                    html += `
+                        <tr>
+                            <td>${dist.id}</td>
+                            <td>${dist.farmer_id}</td>
+                            <td>${dist.farmer_name}</td>
+                            <td>${dist.session_name}</td>
+                            <td>${dist.fertilizer_type}</td>
+                            <td><strong>${dist.allocated_bags}</strong></td>
+                            <td>${new Date(dist.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function loadMyDistributions() {
+    $('#pageTitle').text('My Distributions');
+    $('#pageSubtitle').text('Fertilizer distributed by me');
+    
+    $.ajax({
+        url: `/api/distributions/officer/${currentUser.user_id}`,
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const distributions = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Total Distributions: ${distributions.length}</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Request ID</th>
+                                        <th>Farmer</th>
+                                        <th>Session</th>
+                                        <th>Fertilizer</th>
+                                        <th>Bags</th>
+                                        <th>Distributed At</th>
+                                        <th>Acknowledged</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                distributions.forEach(dist => {
+                    html += `
+                        <tr>
+                            <td>${dist.id}</td>
+                            <td>${dist.farmer_name}</td>
+                            <td>${dist.session_name}</td>
+                            <td>${dist.fertilizer_type}</td>
+                            <td><strong>${dist.allocated_bags}</strong></td>
+                            <td>${new Date(dist.distributed_at).toLocaleString()}</td>
+                            <td>
+                                ${dist.acknowledged ? 
+                                    '<span class="badge bg-success">Yes</span>' : 
+                                    '<span class="badge bg-warning">Pending</span>'}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+// ============= ADMIN FUNCTIONS =============
+
+function loadFarmers() {
+    $('#pageTitle').text('Farmers Management');
+    $('#pageSubtitle').text('View all registered farmers');
+    
+    $.ajax({
+        url: '/api/farmers',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const farmers = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Total Farmers: ${farmers.length}</div>
+                            <button class="btn btn-success btn-sm" onclick="showRegisterModal('farmer')">
+                                <i class="bi bi-plus-circle"></i> Add Farmer
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>LGA</th>
+                                        <th>Ward</th>
+                                        <th>Farm Size</th>
+                                        <th>Total Bags Received</th>
+                                        <th>Registered</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                farmers.forEach(farmer => {
+                    html += `
+                        <tr>
+                            <td>${farmer.id}</td>
+                            <td><strong>${farmer.name}</strong></td>
+                            <td>${farmer.phone || 'N/A'}</td>
+                            <td>${farmer.lga || 'N/A'}</td>
+                            <td>${farmer.ward || 'N/A'}</td>
+                            <td>${farmer.farm_size || 0} ha</td>
+                            <td><span class="badge bg-primary">${farmer.total_bags_received}</span></td>
+                            <td>${new Date(farmer.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function loadOfficers() {
+    $('#pageTitle').text('Store Officers Management');
+    $('#pageSubtitle').text('View all store officers');
+    
+    $.ajax({
+        url: '/api/officers',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const officers = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Total Officers: ${officers.length}</div>
+                            <button class="btn btn-success btn-sm" onclick="showRegisterModal('officer')">
+                                <i class="bi bi-plus-circle"></i> Add Officer
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                        <th>Registered</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                officers.forEach(officer => {
+                    html += `
+                        <tr>
+                            <td>${officer.id}</td>
+                            <td><strong>${officer.name}</strong></td>
+                            <td>${officer.location || 'N/A'}</td>
+                            <td>${new Date(officer.created_at).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function loadAuditLogs() {
+    $('#pageTitle').text('Audit Logs');
+    $('#pageSubtitle').text('System activity logs');
+    
+    $.ajax({
+        url: '/api/audit_logs',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const logs = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Recent Activity (Last 100 entries)</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Actor</th>
+                                        <th>Type</th>
+                                        <th>Action</th>
+                                        <th>Details</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                logs.forEach(log => {
+                    html += `
+                        <tr>
+                            <td>${log.id}</td>
+                            <td>${log.actor_id}</td>
+                            <td><span class="badge bg-info">${log.actor_type}</span></td>
+                            <td><strong>${log.action}</strong></td>
+                            <td>${log.details || 'N/A'}</td>
+                            <td>${new Date(log.timestamp).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+// ============= BLOCKCHAIN FUNCTIONS =============
+
+function loadBlockchain() {
+    $('#pageTitle').text('Blockchain Explorer');
+    $('#pageSubtitle').text('View and verify blockchain');
+    
+    $.ajax({
+        url: '/api/blockchain',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                const blockchain = response.data;
+                
+                let html = `
+                    <div class="content-card">
+                        <div class="content-card-header">
+                            <div class="content-card-title">Blockchain (${blockchain.length} blocks)</div>
+                            <button class="btn btn-primary btn-sm" onclick="verifyBlockchainIntegrity()">
+                                <i class="bi bi-shield-check"></i> Verify Integrity
+                            </button>
+                        </div>
+                        <div style="max-height: 600px; overflow-y: auto;">
+                `;
+                
+                blockchain.reverse().forEach((block, index) => {
+                    const isGenesis = block.index === 0;
+                    html += `
+                        <div class="blockchain-block ${isGenesis ? 'genesis' : ''}">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0">
+                                    ${isGenesis ? '<i class="bi bi-gem"></i> Genesis Block' : `Block #${block.index}`}
+                                </h6>
+                                <small class="text-muted">${new Date(block.timestamp).toLocaleString()}</small>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small class="text-muted">Hash:</small>
+                                    <div class="hash-display">${block.hash}</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted">Previous Hash:</small>
+                                    <div class="hash-display">${block.previous_hash}</div>
+                                </div>
+                            </div>
+                            
+                            ${block.transactions.length > 0 ? `
+                                <div class="mt-2">
+                                    <strong>Transactions:</strong>
+                                    ${block.transactions.map(tx => `
+                                        <div class="p-2 bg-white rounded mt-1">
+                                            <small>
+                                                <strong>Type:</strong> ${tx.type}<br>
+                                                ${tx.farmer_id ? `<strong>Farmer:</strong> ${tx.farmer_id}<br>` : ''}
+                                                ${tx.allocated_bags ? `<strong>Bags:</strong> ${tx.allocated_bags}<br>` : ''}
+                                                ${tx.distributed_by ? `<strong>Distributed By:</strong> ${tx.distributed_by}<br>` : ''}
+                                            </small>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : '<p class="text-muted mt-2">No transactions</p>'}
+                        </div>
+                    `;
+                });
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+                
+                $('#contentArea').html(html);
+            }
+        }
+    });
+}
+
+function verifyBlockchainIntegrity() {
+    $.ajax({
+        url: '/api/blockchain/verify',
+        method: 'GET',
+        success: function(response) {
+            if (response.success) {
+                if (response.valid) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Blockchain Valid',
+                        text: 'The blockchain integrity is intact. No tampering detected.',
+                        confirmButtonColor: '#28a745'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Blockchain Compromised',
+                        text: 'The blockchain has been tampered with!',
+                        confirmButtonColor: '#dc3545'
+                    });
+                }
+            }
+        }
+    });
+}
+
+// ============= UTILITY FUNCTIONS =============
+
+function createPieChart(canvasId, data) {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    
+    const labels = data.map(item => item.status.toUpperCase());
+    const values = data.map(item => item.count);
+    const colors = data.map(item => {
+        switch(item.status) {
+            case 'pending': return '#ffc107';
+            case 'approved': return '#28a745';
+            case 'distributed': return '#17a2b8';
+            case 'completed': return '#6c757d';
+            case 'active': return '#007bff';
+            default: return '#6c757d';
+        }
+    });
+    
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+
+function toggleSidebar() {
+    $('#sidebar').toggleClass('active');
+}
+
+// Mobile menu handling
+$(document).on('click', function(e) {
+    if (!$(e.target).closest('.sidebar, .mobile-menu-btn').length) {
+        $('#sidebar').removeClass('active');
+    }
+});
+
+</script>
+
+</body>
+</html>
