@@ -32,15 +32,21 @@ logger = logging.getLogger(__name__)
 
 def get_db():
     """
-    Returns a psycopg v3 connection using DATABASE_URL.
-    Render injects DATABASE_URL automatically when a Postgres DB is linked.
+    Returns a psycopg v3 connection.
+    Set DATABASE_URL to the External Database URL from your Render PostgreSQL dashboard.
+    External URL format: postgresql://user:pass@dpg-xxxx.render.com:5432/dbname
+    SSL is required for all external Render PostgreSQL connections.
     """
     database_url = os.environ.get('DATABASE_URL', '')
     if not database_url:
         raise RuntimeError("DATABASE_URL environment variable is not set.")
     if database_url.startswith('postgres://'):
         database_url = database_url.replace('postgres://', 'postgresql://', 1)
-    conn = psycopg.connect(database_url, row_factory=psycopg.rows.dict_row)
+    conn = psycopg.connect(
+        database_url,
+        row_factory=psycopg.rows.dict_row,
+        sslmode='require'
+    )
     return conn
 
 
@@ -183,27 +189,27 @@ def seed_defaults():
     """
     Insert default users on first boot if they don't already exist.
     Credentials:
-      Admin:         A001 / Admin123
-      Store Officer: S001 / Officer123
-      Farmer:        F001 / Farmer123
+      Admin:         A001 / Admin
+      Store Officer: S001 / Officer
+      Farmer:        F001 / Farmer
     """
     defaults = [
         {
             'table': 'admins',
             'insert': 'INSERT INTO admins (id, name, password) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('A001', 'Admin', hash_password('Admin1')),
+            'values': ('A001', 'Admin', hash_password('Admin')),
             'label': 'Admin A001',
         },
         {
             'table': 'store_officers',
             'insert': 'INSERT INTO store_officers (id, name, password, location) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('S001', 'Store Officer', hash_password('Officer1'), 'HQ'),
+            'values': ('S001', 'Store Officer', hash_password('Officer'), 'HQ'),
             'label': 'Store Officer S001',
         },
         {
             'table': 'farmers',
             'insert': 'INSERT INTO farmers (id, name, password, phone, lga, ward, polling_unit, farm_size) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('F001', 'Demo Farmer', hash_password('Farmer1'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5),
+            'values': ('F001', 'Demo Farmer', hash_password('Farmer'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5),
             'label': 'Farmer F001',
         },
     ]
