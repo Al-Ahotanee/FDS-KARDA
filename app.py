@@ -187,38 +187,35 @@ def init_db():
 
 def seed_defaults():
     """
-    Insert default users on first boot if they don't already exist.
+    Upsert default users on every boot — fixes passwords even if record already exists.
     Credentials:
-      Admin:         A001 / Admin
-      Store Officer: S001 / Officer
-      Farmer:        F001 / Farmer
+      Admin:         A001 / Admin1
+      Store Officer: S001 / Officer1
+      Farmer:        F001 / Farmer1
     """
-    defaults = [
-        {
-            'table': 'admins',
-            'insert': 'INSERT INTO admins (id, name, password) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('A001', 'Admin', hash_password('Admin1')),
-            'label': 'Admin A001',
-        },
-        {
-            'table': 'store_officers',
-            'insert': 'INSERT INTO store_officers (id, name, password, location) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('S001', 'Store Officer', hash_password('Officer1'), 'HQ'),
-            'label': 'Store Officer S001',
-        },
-        {
-            'table': 'farmers',
-            'insert': 'INSERT INTO farmers (id, name, password, phone, lga, ward, polling_unit, farm_size) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('F001', 'Demo Farmer', hash_password('Farmer1'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5),
-            'label': 'Farmer F001',
-        },
-    ]
-
     conn = get_db()
     with conn.cursor() as cur:
-        for user in defaults:
-            cur.execute(user['insert'], user['values'])
-            logger.info(f"Seeded default user: {user['label']}")
+        cur.execute("""
+            INSERT INTO admins (id, name, password)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (id) DO UPDATE SET password = EXCLUDED.password, name = EXCLUDED.name
+        """, ('A001', 'Admin', hash_password('Admin1')))
+        logger.info("Upserted Admin A001")
+
+        cur.execute("""
+            INSERT INTO store_officers (id, name, password, location)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (id) DO UPDATE SET password = EXCLUDED.password, name = EXCLUDED.name
+        """, ('S001', 'Store Officer', hash_password('Officer1'), 'HQ'))
+        logger.info("Upserted Store Officer S001")
+
+        cur.execute("""
+            INSERT INTO farmers (id, name, password, phone, lga, ward, polling_unit, farm_size)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (id) DO UPDATE SET password = EXCLUDED.password, name = EXCLUDED.name
+        """, ('F001', 'Demo Farmer', hash_password('Farmer1'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5))
+        logger.info("Upserted Farmer F001")
+
     conn.commit()
     conn.close()
 
