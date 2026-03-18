@@ -197,19 +197,19 @@ def seed_defaults():
         {
             'table': 'admins',
             'insert': 'INSERT INTO admins (id, name, password) VALUES (%s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('A001', 'Admin', hash_password('Admin')),
+            'values': ('A001', 'Admin', hash_password('Admin1')),
             'label': 'Admin A001',
         },
         {
             'table': 'store_officers',
             'insert': 'INSERT INTO store_officers (id, name, password, location) VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('S001', 'Store Officer', hash_password('Officer'), 'HQ'),
+            'values': ('S001', 'Store Officer', hash_password('Officer1'), 'HQ'),
             'label': 'Store Officer S001',
         },
         {
             'table': 'farmers',
             'insert': 'INSERT INTO farmers (id, name, password, phone, lga, ward, polling_unit, farm_size) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (id) DO NOTHING',
-            'values': ('F001', 'Demo Farmer', hash_password('Farmer'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5),
+            'values': ('F001', 'Demo Farmer', hash_password('Farmer1'), '08000000000', 'Katsina', 'Central', 'Unit 1', 2.5),
             'label': 'Farmer F001',
         },
     ]
