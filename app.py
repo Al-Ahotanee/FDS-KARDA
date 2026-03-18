@@ -183,9 +183,9 @@ def seed_defaults():
     """
     Insert default users on first boot if they don't already exist.
     Credentials:
-      Admin:         A001 / Admin
-      Store Officer: S001 / Officer
-      Farmer:        F001 / Farmer
+      Admin:         A001 / Admin123
+      Store Officer: S001 / Officer123
+      Farmer:        F001 / Farmer123
     """
     defaults = [
         {
